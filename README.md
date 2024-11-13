@@ -17,13 +17,6 @@ install all dependencies with
 pip install -r requirements.txt
 ```
 
-Please download the PFN https://github.com/automl/PFNs.git before using our code.
-```
-git clone https://github.com/automl/PFNs.git
-cd PFNs
-pip install -e .
-```
-
 __Training a model__
 
 [financial_dataloader.py](financial_dataloader.py) and [data_utils.py](data_utils.py) provides the dataloader of financial data prior for the Transformer.
