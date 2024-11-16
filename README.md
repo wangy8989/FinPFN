@@ -17,6 +17,8 @@ install all dependencies with
 pip install -r requirements.txt
 ```
 
+The code is forked on [TransformersCanDoBayesianInference](https://github.com/automl/TransformersCanDoBayesianInference).
+
 __Training a model__
 
 [financial_dataloader.py](financial_dataloader.py) and [data_utils.py](data_utils.py) provides the dataloader of financial data prior for the Transformer.
@@ -60,7 +62,7 @@ output_df = test_model(eval_pos, method_list, prior_config)
 
 __Cite__
 
-FinPFN is introduced in
+FinPFN is introduced in 
 ```
 
 ```
