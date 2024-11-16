@@ -17,7 +17,7 @@ install all dependencies with
 pip install -r requirements.txt
 ```
 
-The code is forked on [TransformersCanDoBayesianInference](https://github.com/automl/TransformersCanDoBayesianInference).
+The code is forked from [TransformersCanDoBayesianInference](https://github.com/automl/TransformersCanDoBayesianInference).
 
 __Training a model__
 
@@ -62,7 +62,7 @@ output_df = test_model(eval_pos, method_list, prior_config)
 
 __Cite__
 
-FinPFN is introduced in 
+When using, please cite [FinPFN](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5022829)
 ```
 
 ```
