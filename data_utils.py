@@ -14,7 +14,7 @@ filename = "data/30features_csi500.parquet"  # csi500
 
 def read_financial_data():
     """
-    Read a financial data file, split into train and test according to split_date.
+    Read a financial data file (parquet), split into train and test according to split_date.
     The dataframe must contain the following columns: 
         "id" - representing stock id/name
         "date" - the date or datetime
@@ -79,7 +79,7 @@ def get_financial_data(train, **config):
     """
     # fill a number of features with zeros if not enough features (zero padding)
     add_feats = config["num_features"] - (data.shape[1] - 3)
-    for feat in range(add_feats):  # if add_feats < 0, no add columns
+    for feat in range(add_feats):  # if add_feats < 0, do not add columns
         data["addfeat%s" % feat] = 0
     featnames = data.drop(["date", "id", "target"], axis=1).columns
 

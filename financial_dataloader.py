@@ -25,7 +25,7 @@ class DataLoader(data.DataLoader):
     def __init__(self, num_steps, fuse_x_y=False, train=True, **get_batch_kwargs):
         set_locals_in_self(locals())
         
-        # The stuff outside the or is set as class attribute before instantiation.
+        # The stuff outside or is set as class attribute before instantiation.
         self.num_features = get_batch_kwargs.get('num_features') or self.num_features
         self.num_outputs = get_batch_kwargs.get('num_outputs') or self.num_outputs
         print('DataLoader.__dict__', self.__dict__)
@@ -41,8 +41,8 @@ class DataLoader(data.DataLoader):
 
     def gbm(self, fuse_x_y, train, step, **kwargs):
         """
-        For every step, we randomly sample from some two dates of training data to get batches (batch_size).
-        After many steps in an epoch, we do not repeat sample and use up all datapoints available (total batches > batch_size * step_per_epoch).
+        For every step, we randomly sample from some two dates of training data to get a datapoint.
+        After many steps in an epoch, we do not repeatedly sample and use up all datapoints available (total datapoints > batch_size * step_per_epoch).
         Only train_X, train_Y will be modified in the method
         :return: x, y, y. 
               x.shape = (seq_len=L stocks trading on two dates, batch_size=resample L stocks m times, num_features=30 features)
@@ -89,13 +89,11 @@ class DataLoader(data.DataLoader):
         validation data used to tune hyperparameters: learning rate, etc
         validate every 10 epochs (if validation_period=10)
         :param finetuned_model: fine tuned model after every 10 epochs
-        :param eval_pos: default is to evaluate score of the last date
-        DO 100 BOOTSTRAPS OF VALIDATION DATASET AND CALCULATE VALIDATION SCORE AS THE MEAN AND STD
         """
         finetuned_model.eval()
         device = next(iter(finetuned_model.parameters())).device
         
-        # reload valid dataloader for every epoch
+        # reload valid dataloader after every epoch
         # one dataloader for training, another for valid, valid dataset: train=False
         if not hasattr(self, 't_dl'):
             print("load t_dl...")

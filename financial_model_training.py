@@ -182,7 +182,7 @@ def test_model(eval_pos, method_list, kwargs_dict):
     
     data = test_set.copy()
 
-    dates = data["date"].drop_duplicates().sort_values().tolist()  # all dates available, sort_values before unique is slow
+    dates = data["date"].drop_duplicates().sort_values().tolist()  # all dates available
     dates_pair = get_dates_pair(dates, date_style=kwargs_dict["date_style"])  # date_style in testing should match training
 
     """
@@ -190,7 +190,7 @@ def test_model(eval_pos, method_list, kwargs_dict):
     """
     # fill a number of features with zeros if not enough features (zero padding)
     add_feats = kwargs_dict["num_features"] - (data.shape[1] - 3)
-    for feat in range(add_feats):  # if add_feats < 0, no add columns
+    for feat in range(add_feats):  # if add_feats < 0, do not add columns
         data["addfeat%s"%feat] = 0
     featnames = data.drop(columns=["date", "id", "target"]).columns.values#.tolist()
 
@@ -221,7 +221,7 @@ def test_model(eval_pos, method_list, kwargs_dict):
             sdf['target']  = pd.qcut(x=sdf["target"], q=kwargs_dict["multiclass"], duplicates='drop', labels=False)  # create bins
             df          += [sdf]                                                   # append to list
         data_date = pd.concat(df, axis=0)
-        _, bins = pd.qcut(x=data_date[data_date.date==pair[0]]["target"], q=config["multiclass"], duplicates='drop', labels=False, retbins=True)
+        _, bins = pd.qcut(x=data_date[data_date.date==dates_pair[0]]["target"], q=config["multiclass"], duplicates='drop', labels=False, retbins=True)
         data_date["target"] = pd.cut(x=data_date["target"], bins=bins, include_lowest=True, labels=False)
         
         # have to make sure all samples are included
@@ -239,7 +239,7 @@ def test_model(eval_pos, method_list, kwargs_dict):
             test_X = list(test_X_Y[sample_feats].values)  # slice columns, tolist() too slow
             test_Y = list(test_X_Y["target"].values)
             
-            # only one batch: shape=(seq_len,1,feats), (seq_len,1)
+            # only one datapoint for each batch: shape=(seq_len,1,feats), (seq_len,1)
             test_X = torch.tensor(test_X, device="cpu", dtype=torch.float32).unsqueeze(1)
             test_Y = torch.tensor(test_Y, device="cpu", dtype=torch.float32).unsqueeze(1)
             
@@ -345,40 +345,6 @@ def eval_transformer(X, y, model, eval_pos, multiclass=2, verbose=True):
 
     return outputs, auc
 
-
-def eval_tabpfn(X, y, eval_pos, multiclass=2, device="cuda:0"):
-    """
-    Evaluate TabPFN model after eval_pos
-    TabPFN: https://github.com/automl/TabPFN
-    """
-    print(">>> Evaluating TabPFN model performance...\n")
-    
-    X, y = X.squeeze(1), y.squeeze(1)  # can only fit two dimension
-    
-    # model from TabPFN
-    classifier_tab = TabPFNClassifier(device=device, 
-                          N_ensemble_configurations=3,  
-                          no_preprocess_mode=True,  # do not preprocess data as our data is already preprocessed
-                          multiclass_decoder=None,  # cannot shuffle classes, order matters
-                          feature_shift_decoder=False  # feature orders doesn't matter, can set to True (default)
-                           )
-    # fit classes from train data, output may be dim < 10 classes
-    classifier_tab.fit(X[:eval_pos], y[:eval_pos], overwrite_warning=True)  # only saves the training data self.X=X, self.y=y.
-    
-    # including preprocessing of data: probably don't need it?
-    if multiclass == 2:  # binary
-        prediction_ = classifier_tab.predict_proba(X[eval_pos:])[:, 1]  # return predicted probabilities for class 1
-        auc = roc_auc_score(y[eval_pos:], prediction_)
-    
-    else:            # multiclass
-        prediction_ = classifier_tab.predict_proba(X[eval_pos:])  # return predicted probabilities for each class
-        try:
-            auc = roc_auc_score(y[eval_pos:], prediction_, multi_class="ovo")
-        except:  # maybe y[eval_pos:] does not contain all classes, produce error
-            auc = 0
-
-    return prediction_, auc, classifier_tab.classes_.astype(int).tolist()
-
     
 """
 Can add other baseline methods.
@@ -437,6 +403,44 @@ def random_forest_metric(train_x, train_y, test_x, test_y, clf=None, multiclass=
         auc = roc_auc_score(test_y, pred) 
 
     return pred, accuracy, auc, classes
+
+
+## TabPFN
+def eval_tabpfn(X, y, eval_pos, multiclass=2, device="cuda:0"):
+    """
+    Evaluate TabPFN model after eval_pos
+    TabPFN: https://github.com/automl/TabPFN
+    """
+    print(">>> Evaluating TabPFN model performance...\n")
+
+    X, y = X.squeeze(1), y.squeeze(1)  # can only fit two dimension
+
+    # model from TabPFN
+    classifier_tab = TabPFNClassifier(device=device,
+                                      N_ensemble_configurations=3,
+                                      no_preprocess_mode=True,
+                                      # do not preprocess data as our data is already preprocessed
+                                      multiclass_decoder=None,  # cannot shuffle classes, order matters
+                                      feature_shift_decoder=False
+                                      # feature orders doesn't matter, can set to True (default)
+                                      )
+    # fit classes from train data, output may be dim < 10 classes
+    classifier_tab.fit(X[:eval_pos], y[:eval_pos],
+                       overwrite_warning=True)  # only saves the training data self.X=X, self.y=y.
+
+    # including preprocessing of data: probably don't need it?
+    if multiclass == 2:  # binary
+        prediction_ = classifier_tab.predict_proba(X[eval_pos:])[:, 1]  # return predicted probabilities for class 1
+        auc = roc_auc_score(y[eval_pos:], prediction_)
+
+    else:  # multiclass
+        prediction_ = classifier_tab.predict_proba(X[eval_pos:])  # return predicted probabilities for each class
+        try:
+            auc = roc_auc_score(y[eval_pos:], prediction_, multi_class="ovo")
+        except:  # maybe y[eval_pos:] does not contain all classes, produce error
+            auc = 0
+
+    return prediction_, auc, classifier_tab.classes_.astype(int).tolist()
 
 
 def get_tabpfn_config():
