@@ -4,7 +4,7 @@ In this paper, we propose the Financial Prior-Data Fitted Network (FinPFN), a me
 
 __Getting Started__
 
-This is a Python project, we used Python 3.10 in development and recommend to use a `virtualenv` or `conda`.
+This is a Python project, we used `Python 3.10` in development and recommend to use a `virtualenv` or `conda`.
 To use our code, clone the project with
 
 ```
@@ -17,7 +17,10 @@ install all dependencies with
 pip install -r requirements.txt
 ```
 
+The [TabPFN](https://github.com/PriorLabs/TabPFN) version we used is `2.0.8`.
+
 The code is forked from [finetune_tabpfn_v2](https://github.com/LennartPurucker/finetune_tabpfn_v2).
+
 
 __Training a model__
 
@@ -40,7 +43,12 @@ __Cite__
 
 When using, please cite [FinPFN](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5022829)
 ```
-
+@unpublished{wang2025finpfn,
+  author = {Wang, Yicheng and Lera, Sando Claudio},
+  title     = {Meta-Learning for Return Prediction in Shifting Market Regimes},
+  note      = {Manuscript under review},
+  year      = {2025}
+}
 ```
 
 TabPFNs were introduced in 

@@ -1,4 +1,4 @@
-tabpfn
+tabpfn==2.0.8
 ruff
 lightgbm
 pynvml
