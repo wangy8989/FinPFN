@@ -41,17 +41,23 @@ __Downloading Data__
 
 __Cite__
 
-When using, please cite [FinPFN](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5022829)
+When using, please cite [FinPFN](https://www.sciencedirect.com/science/article/abs/pii/S1386418125000825)
 ```
-@unpublished{wang2025finpfn,
-  author = {Wang, Yicheng and Lera, Sando Claudio},
-  title     = {Meta-Learning for Return Prediction in Shifting Market Regimes},
-  note      = {Manuscript under review},
-  year      = {2025}
+@article{wang2025finpfn,
+title = {Meta-learning for return prediction in shifting market regimes},
+journal = {Journal of Financial Markets},
+pages = {101042},
+year = {2025},
+issn = {1386-4181},
+doi = {https://doi.org/10.1016/j.finmar.2025.101042},
+url = {https://www.sciencedirect.com/science/article/pii/S1386418125000825},
+author = {Yicheng Wang and Sandro Claudio Lera},
+keywords = {Financial machine learning, Return prediction, Regime shifts, Meta-learning},
+abstract = {We propose a meta-learning framework for cross-sectional return prediction that adapts to regime-dependent dynamics. Instead of learning a fixed mapping from features to returns, we condition our model forecasts on recent feature-return relationships. This allows it to adjust to evolving market states without explicit regime labels or frequent re-estimation. We implement the framework with a Transformer-based Bayesian predictor, the Financial Prior-data Fitted Network (FinPFN), and evaluate it on daily Chinese A-shares and monthly U.S. equities. During regime changes, proxied by large volatility shifts, our method significantly outperforms benchmarks, offering a practical tool for dynamic return prediction.}
 }
 ```
 
-TabPFNs were introduced in 
+TabPFNs were from
 ```
 @article{hollmann2025tabpfn,
  title={Accurate predictions on small data with a tabular foundation model},
