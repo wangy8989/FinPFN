@@ -41,7 +41,7 @@ __Downloading Data__
 
 __Cite__
 
-When using, please cite [FinPFN](https://www.sciencedirect.com/science/article/abs/pii/S1386418125000825)
+When using, please cite [FinPFN](https://authors.elsevier.com/c/1mCkn4xF2VsT1v) <-- free link for 50 days
 ```
 @article{wang2025finpfn,
 title = {Meta-learning for return prediction in shifting market regimes},
