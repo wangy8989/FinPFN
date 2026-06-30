@@ -1,6 +1,11 @@
-## Official Code for the Paper "Meta-Learning for Cross-Sectional Return Prediction in Financial Markets" (JFM)
+## Official Code for the Paper "Meta-learning for Return Prediction in Shifting Market Regimes" (JFM)
 
-In this paper, we propose the Financial Prior-Data Fitted Network (FinPFN), a meta-learning framework utilizing a Transformer architecture for cross-sectional stock return prediction. 
+In this paper, we propose the Financial Prior-Data Fitted Network ([FinPFN](https://doi.org/10.1016/j.finmar.2025.101042)).
+* We develop a meta-learning framework for regime-adaptive cross-sectional return prediction.
+* Conditioning on recent feature–return pairs captures evolving market dynamics.
+* Prior-data Fitted Network (PFN) enables flexible, efficient adaptation to regimes.
+* FinPFN outperforms benchmarks in volatile and structurally shifting markets.
+* We provide a practical tool for resilient signal generation in dynamic asset pricing contexts.
 
 __Getting Started__
 
