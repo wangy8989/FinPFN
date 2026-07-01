@@ -1,6 +1,11 @@
-## Official Code for the Paper "Meta-Learning for Cross-Sectional Return Prediction in Financial Markets"
+## Official Code for the Paper "Meta-learning for Return Prediction in Shifting Market Regimes" (JFM)
 
-In this paper, we propose the Financial Prior-Data Fitted Network (FinPFN), a meta-learning framework utilizing a Transformer architecture for cross-sectional stock return prediction. 
+In this paper, we propose the Financial Prior-Data Fitted Network ([FinPFN](https://doi.org/10.1016/j.finmar.2025.101042)).
+* We develop a meta-learning framework for regime-adaptive cross-sectional return prediction.
+* Conditioning on recent feature–return pairs captures evolving market dynamics.
+* Prior-data Fitted Network (PFN) enables flexible, efficient adaptation to regimes.
+* FinPFN outperforms benchmarks in volatile and structurally shifting markets.
+* We provide a practical tool for resilient signal generation in dynamic asset pricing contexts.
 
 __Getting Started__
 
@@ -36,22 +41,28 @@ __Evaluating Models__
 
 __Downloading Data__
 
-[Data link](https://connecthkuhk-my.sharepoint.com/:f:/g/personal/u3008632_connect_hku_hk/EkQSQb9H6zxImJYpi-oyWZoBNxjzesNCWdP4O3W5j_netw?e=MGmcbK) with Password: finpfn12345
+[Data link](https://1drv.ms/f/c/ada3d0b0856299f2/IgA5rSYiS684Rpoo5u1S8AcfAYGx-OuQw3YiyGb4ePJcHBA?e=GdgK1i) with Password: finpfn12345
 
 
 __Cite__
 
-When using, please cite [FinPFN](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5022829)
+When using, please cite [FinPFN](https://doi.org/10.1016/j.finmar.2025.101042)
 ```
-@unpublished{wang2025finpfn,
-  author = {Wang, Yicheng and Lera, Sando Claudio},
-  title     = {Meta-Learning for Return Prediction in Shifting Market Regimes},
-  note      = {Manuscript under review},
-  year      = {2025}
+@article{wang2025finpfn,
+ title = {Meta-learning for return prediction in shifting market regimes},
+ journal = {Journal of Financial Markets},
+ pages = {101042},
+ year = {2025},
+ issn = {1386-4181},
+ doi = {https://doi.org/10.1016/j.finmar.2025.101042},
+ url = {https://www.sciencedirect.com/science/article/pii/S1386418125000825},
+ author = {Yicheng Wang and Sandro Claudio Lera},
+ keywords = {Financial machine learning, Return prediction, Regime shifts, Meta-learning},
+ abstract = {We propose a meta-learning framework for cross-sectional return prediction that adapts to regime-dependent dynamics. Instead of learning a fixed mapping from features to returns, we condition our model forecasts on recent feature-return relationships. This allows it to adjust to evolving market states without explicit regime labels or frequent re-estimation. We implement the framework with a Transformer-based Bayesian predictor, the Financial Prior-data Fitted Network (FinPFN), and evaluate it on daily Chinese A-shares and monthly U.S. equities. During regime changes, proxied by large volatility shifts, our method significantly outperforms benchmarks, offering a practical tool for dynamic return prediction.}
 }
 ```
 
-TabPFNs were introduced in 
+TabPFNs were from
 ```
 @article{hollmann2025tabpfn,
  title={Accurate predictions on small data with a tabular foundation model},
