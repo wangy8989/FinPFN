@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 import pandas as pd
 import torch
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader, Dataset, RandomSampler
 
 RANDOM_SEED = 4213
 
@@ -196,8 +196,7 @@ class DatePairDataset(Dataset):
         self.dataset = dataset
         self.batch_size = batch_size
         # every step has batch_size
-#         self.num_steps = self.dataset[0].shape[1]
-        self.num_steps = min(self.dataset[0].shape[1], max_steps*batch_size)  # limit the maximum step per epoch
+        self.num_steps = self.dataset[0].shape[1]
 
     def __len__(self):
         return self.num_steps
@@ -255,10 +254,21 @@ def get_data_loader(
 
     dataset = DatePairDataset(dataset=data_tuple, max_steps=max_steps, batch_size=batch_size)
 
+    # Epoch i: randomly sample 6400 indices from 0...13999, split into 100 batches of 64
+    # The sampler is useful only if you want to keep training time fixed (100 steps per epoch).
+    sampler = RandomSampler(
+                    dataset,
+                    replacement=False,
+                    num_samples=max_steps * batch_size,
+                    generator=torch_rng,
+                )
+
+
     return DataLoader(
         dataset,
+        sampler=sampler,
         batch_size=batch_size,  # batch size of random indexes draw for every step, not repeated
-        shuffle=True,  # True: Good for training to avoid learning patterns based on data(date) order.
+        shuffle=False,  # already shuffled by RandomSampler
         num_workers=num_workers,
         pin_memory=False,
         drop_last=False,  # True: to drop the last incomplete batch
